@@ -38,6 +38,20 @@ class GUI:
 			if EXIT:
 				break
 
+	def show(self, name):
+		if type(name) == int:
+			ind = name if name >= 0 and name < len(self.screens) else None
+		else:
+			ind = None
+			for ind_s, screen in enumerate(self.screens):
+				if screen.name == name:
+					ind = ind_s
+					break
+		if not ind:
+			return;
+		self.screens[self.current].showed = False
+		self.screens.current = ind
+
 	def new_screen(self, name, description, elements):
 		self.screens.append(self.Screen(name=name, description=description, elements=elements))
 
