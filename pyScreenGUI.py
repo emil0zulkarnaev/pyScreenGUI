@@ -111,14 +111,14 @@ class GUI:
 		def create_elements(self, elements):
 			for element in elements:
 				if element['type'] == "check":
-					self.elements.append(self.Checkbox(name=element['name']))
+					self.elements.append(self.Checkbox(screen=self, name=element['name']))
 				elif element['type'] == "select":
-					self.elements.append(self.Select(name=element['name'], variants=element['variants']))
+					self.elements.append(self.Select(screen=self, name=element['name'], variants=element['variants']))
 				elif element['type'] == "input":
-					self.elements.append(self.Input(name=element['name']))
+					self.elements.append(self.Input(screen=self, name=element['name']))
 				elif element['type'] == "button":
-					self.elements.append(self.Button(name=element['name'], callback=element['callback']))
-			self.elements.append(self.Button(name="exit", callback=self.exit))
+					self.elements.append(self.Button(screen=self, name=element['name'], callback=element['callback']))
+			self.elements.append(self.Button(screen=self, name="exit", callback=self.exit))
 
 
 		def __str__(self):
@@ -127,12 +127,13 @@ class GUI:
 			return screen_str
 
 		class Element:
-			def __init__(self, name="element"):
+			def __init__(self, screen, name="element"):
 				self.name = name
+				self.screen = screen
 
 		class Checkbox(Element):
-			def __init__(self, name):
-				super().__init__(name)
+			def __init__(self, screen, name):
+				super().__init__(screen, name)
 
 				self.value = False
 
@@ -140,8 +141,8 @@ class GUI:
 				return "[%s] %s" % ('x' if self.value else ' ', self.name)
 
 		class Select(Element):
-			def __init__(self, name, variants):
-				super().__init__(name)
+			def __init__(self, screen, name, variants):
+				super().__init__(screen, name)
 
 				self.value = None 
 				self.variants = ["close"] + [x for x in variants]
@@ -159,8 +160,8 @@ class GUI:
 					return "%s > %s" % (self.name, self.variants[self.value])
 
 		class Input(Element):
-			def __init__(self, name):
-				super().__init__(name)
+			def __init__(self, screen, name):
+				super().__init__(screen, name)
 
 				self.value = ""
 
@@ -168,12 +169,12 @@ class GUI:
 				return "%s : %s" % (self.name, self.value)
 
 		class Button(Element):
-			def __init__(self, name, callback):
-				super().__init__(name)
+			def __init__(self, screen, name, callback):
+				super().__init__(screen, name)
 				self.callback = callback
 
 			def call(self):
-				self.callback(self)
+				self.callback(self.screen)
 
 			def __str__(self):
 				return "[ %s ]" % (self.name)
@@ -204,7 +205,7 @@ def main():
 		{
 			"name": "Say it",
 			"type": "button",
-			"callback": lambda obj: print("hello", obj)
+			"callback": lambda obj: print("Hello,", obj.elements[2].value)
 		}
 	]
 
