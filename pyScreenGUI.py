@@ -53,7 +53,7 @@ class GUI:
 		self.screens.current = ind
 
 	def new_screen(self, name, description, elements):
-		self.screens.append(self.Screen(name=name, description=description, elements=elements))
+		self.screens.append(self.Screen(root=self, name=name, description=description, elements=elements))
 
 	def hooks(self):
 		keyboard.add_hotkey("space", self.space_hotkey)
@@ -109,7 +109,8 @@ class GUI:
 		self.screens[self.current].showed = False
 
 	class Screen:
-		def __init__(self, name, description, elements):
+		def __init__(self, root, name, description, elements):
+			self.root = root
 			self.name = name
 			self.elements = []
 			self.description = description
@@ -188,7 +189,7 @@ class GUI:
 				self.callback = callback
 
 			def call(self):
-				self.callback(self.screen)
+				self.callback(self.screen.root)
 
 			def __str__(self):
 				return "[ %s ]" % (self.name)
