@@ -50,7 +50,7 @@ class GUI:
 		if not ind:
 			return;
 		self.screens[self.current].showed = False
-		self.screens.current = ind
+		self.current = ind
 
 	def new_screen(self, name, description, elements):
 		self.screens.append(self.Screen(root=self, name=name, description=description, elements=elements))
