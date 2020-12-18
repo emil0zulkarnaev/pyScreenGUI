@@ -47,7 +47,7 @@ class GUI:
 				if screen.name == name:
 					ind = ind_s
 					break
-		if not ind:
+		if ind != None:
 			return;
 		self.screens[self.current].showed = False
 		self.current = ind
